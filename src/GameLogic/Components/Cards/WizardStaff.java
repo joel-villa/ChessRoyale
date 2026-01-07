@@ -12,11 +12,11 @@ import java.util.Set;
 public class WizardStaff implements Card {
     private final int cost = 4;
     private final int[][] attack = {
-            {1,0,1,0,1},
+            {2,0,2,0,2},
             {0,1,1,1,0},
-            {1,1,0,1,1},
+            {2,1,0,1,2},
             {0,1,1,1,0},
-            {1,0,1,0,1}
+            {2,0,2,0,2}
     };
     @Override
     public Set<Coordinate> getAttack() {
