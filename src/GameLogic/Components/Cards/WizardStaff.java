@@ -19,8 +19,8 @@ public class WizardStaff implements Card {
             {1,0,1,0,1}
     };
     @Override
-    public Set<Coordinate> getAttack(Coordinate ref) {
-        return CoordinateFunctions.bitArrayToCoord(attack,ref);
+    public Set<Coordinate> getAttack() {
+        return CoordinateFunctions.bitArrayToCoord(attack);
     }
 
     @Override

@@ -19,8 +19,8 @@ public class Dagger implements Card {
             {0,0,0,0,0}
     };
     @Override
-    public Set<Coordinate> getAttack(Coordinate ref) {
-        return CoordinateFunctions.bitArrayToCoord(attack,ref);
+    public Set<Coordinate> getAttack() {
+        return CoordinateFunctions.bitArrayToCoord(attack);
     }
 
     @Override
