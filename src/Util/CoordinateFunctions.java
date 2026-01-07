@@ -7,10 +7,9 @@ public class CoordinateFunctions {
     /**
      * Converts bit array to set of coordinates from reference coordinate
      * @param bitArr bit array input
-     * @param ref reference point
      * @return set of coordinates based on bit array
      */
-    public static Set<Coordinate> bitArrayToCoord(int[][] bitArr, Coordinate ref) {
+    public static Set<Coordinate> bitArrayToCoord(int[][] bitArr) {
         Set<Coordinate> out = new HashSet<>();
         int dim = bitArr.length;
         int mid = dim/2 + 1;

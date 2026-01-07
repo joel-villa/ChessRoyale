@@ -11,26 +11,27 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * The amazon
- * a fierce warrior with little weapon wielding ability
+ * The big boy himself
  */
-public class Hexagon implements Piece {
-    private final int capacity = Pieces.HEXAGON.getCapacity();
+public class King implements Piece {
+    private final int capacity = Pieces.KING.getCapacity();
     private final int[][] movement = {
-            {1,0,1,0,1},
-            {0,1,2,1,0},
-            {1,2,0,2,1},
-            {0,1,2,1,0},
-            {1,0,1,0,1}
+            {0,0,0,0,0},
+            {0,1,1,1,0},
+            {0,1,0,1,0},
+            {0,1,1,1,0},
+            {0,0,0,0,0}
     };
     private List<Card> weapons;
     private final int playerID;
 
-    public Hexagon(int playerID){
+    public King(int playerID) {
         this.playerID = playerID;
     }
+
     @Override
     public Set<Coordinate> getMovement() {
+        //TODO: Implement this one differently
         return CoordinateFunctions.bitArrayToCoord(movement);
     }
 

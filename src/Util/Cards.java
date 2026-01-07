@@ -8,7 +8,7 @@ public enum Cards {
     PITCHFORK(    2, 1),
     SHIELD(       3, 1),
     SLINGSHOT(    4, 1),
-    CHAIN_MACE(   5, 2),
+    FLAIL(        5, 2),
     SWORD(        6, 2),
     BOW(          7, 2),
     LANCE(        8, 3),
