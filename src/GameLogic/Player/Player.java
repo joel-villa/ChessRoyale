@@ -12,14 +12,14 @@ public interface Player {
 
     //May be helpful to define code for this one in util
     public void drawCard(int amt);
-    public void playCards(int limit);
-    public void movePiece();
     //Some way to designate the result of the attack?
-    public int attack();
     public String winText();
     //Call this in constructor
     public void init(int playerID, List<Card> playerDeck);
     public PlayerData getData();
+    public int handSize();
+    public void takeTurn();
+    //TODO: fillHand
 
 
 }
