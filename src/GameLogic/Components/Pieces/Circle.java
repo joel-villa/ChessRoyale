@@ -1,15 +1,7 @@
 package GameLogic.Components.Pieces;
 
-import GameLogic.Components.Card;
 import GameLogic.Components.Piece;
-import GameLogic.Components.Player;
-import Util.Coordinate;
-import Util.CoordinateFunctions;
 import Util.Pieces;
-
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 /**
  * Mr potential himself

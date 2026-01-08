@@ -96,4 +96,10 @@ public class GameBoard implements Board {
     public Piece getPiece(Coordinate coordinate) {
         return board[coordinate.row()][coordinate.col()];
     }
+
+    @Override
+    public int attack(int player, Coordinate source, Coordinate target) {
+        //TODO
+        return 0;
+    }
 }
