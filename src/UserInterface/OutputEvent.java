@@ -1,5 +1,9 @@
 package UserInterface;
 
 public class OutputEvent {
-    // TODO
+    public OutputEventType type;
+
+    public OutputEvent(OutputEventType type) {
+        this.type = type;
+    }
 }

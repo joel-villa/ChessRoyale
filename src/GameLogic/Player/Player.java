@@ -1,7 +1,11 @@
 package GameLogic.Player;
 
+import GameLogic.Board.GameBoard;
 import GameLogic.Components.Board;
 import GameLogic.Components.Card;
+import GameLogic.Components.Piece;
+import UserInterface.OutputEvent;
+import UserInterface.OutputEventType;
 import UserInterface.PlayerIO;
 import Util.Constants;
 
@@ -15,28 +19,20 @@ public class Player {
     private final PlayerIO playerIO;
     private final Board board;
 
-    Player(int playerID, List<Card> playerDeck, PlayerIO playerIO, Board board) {
+    Player(int playerID, List<Card> playerDeck, PlayerIO playerIO) {
         this.playerIO = playerIO;
         init(playerID, playerDeck);
-        this.board = board;
+        this.board = GameBoard.getInstance();
     }
     public void gainElixir(int amt) {
         this.data.elixir += amt;
     }
     //May be helpful to define code for this one in util
-    public void drawCard(int amt) {
-        //TODO: fillHand
+    public void drawCards() {
 
-        for (int i = 0; i < amt; i++) {
-            if (!data.playerDeck.isEmpty()) {
-                data.playerHand.add(data.playerDeck.get(0));
-                data.playerDeck.remove(0);
-            }
-        }
-        while (data.playerHand.size() > Constants.HAND_SIZE){
-            System.out.println("hand over capacity");
-            Card cRemoved = data.playerHand.remove(data.playerHand.size() - 1);
-            data.playerDeck.add(cRemoved);
+        while (data.playerHand.size() < Constants.HAND_SIZE && !data.playerDeck.isEmpty()) {
+            data.playerHand.add(data.playerDeck.get(0));
+            data.playerDeck.remove(0);
         }
         if (data.playerDeck.isEmpty()){
             System.out.println("empty deck, what the heck");
@@ -66,7 +62,7 @@ public class Player {
         while(action.type != 2) {
             // Handle Card actions aka weapon equipment
             if (action instanceof PlayerIO.CardAction) {
-                handleEquipment((PlayerIO.CardAction) action);
+                equipAndOutputEvent((PlayerIO.CardAction) action);
             }
             action = playerIO.getAction();
         }
@@ -76,6 +72,7 @@ public class Player {
             if (action instanceof PlayerIO.PieceAction) {
                 PlayerIO.PieceAction pieceAction =  (PlayerIO.PieceAction) action;
                 switch (pieceAction.actionType) {
+                    //TODO: method for playerIO output events
                     case MOVE -> handleMovement(pieceAction);
                     case ATTACK -> returnVal = handleAttack(pieceAction);
                 }
@@ -88,9 +85,58 @@ public class Player {
         return returnVal;
     }
 
-    private void handleEquipment(PlayerIO.CardAction action) {
-        // TODO
+    /**
+     *
+     * @param action
+     * @return
+     * 0 - successful
+     * 1 - piece in combat
+     * 2 - piece over capacity
+     * 3 - unexpected error
+     */
+    private int handleEquipment(PlayerIO.CardAction action) {
+        //Invalid idx
+        if (action.idx < 0 || action.idx > data.playerHand.size() - 1) {
+            return 3;
+        }
 
+        //Invalid coordinate
+        boolean rowOut = action.target.row() < 0 || action.target.row() > board.getDimensions().row() - 1;
+        boolean colOut = action.target.col() < 0 || action.target.col() > board.getDimensions().col() - 1;
+        if (rowOut || colOut) return 3;
+
+        //Identify card and coordinate
+        Card card = data.playerHand.get(action.idx);
+        Piece piece = board.getPiece(action.target);
+
+        //Return values match
+        return piece.equipWeapon(card);
+    }
+
+    /**
+     * Handles a card action and outputs the result to the playerIO
+     * @param action the action to handle
+     */
+    private void equipAndOutputEvent(PlayerIO.CardAction action) {
+        OutputEvent e;
+        switch(handleEquipment(action)) {
+            case 0 -> {
+                e = new OutputEvent(OutputEventType.CardSuccess);
+            }
+            case 1 -> {
+                e = new OutputEvent(OutputEventType.CardFailCombat);
+            }
+            case 2 -> {
+                e = new OutputEvent(OutputEventType.CardFailCapacity);
+            }
+            case 3 -> {
+                e = new OutputEvent(OutputEventType.CardFailInvalidIndex);
+            }
+            default -> {
+                e = new OutputEvent(OutputEventType.CardFailUnknownError);
+            }
+        }
+        playerIO.notifyEvent(e);
     }
 
     private int handleAttack(PlayerIO.PieceAction attack) {
@@ -99,7 +145,7 @@ public class Player {
     }
 
     private void handleMovement(PlayerIO.PieceAction movement) {
-        //TODO safety precautions
+        //TODO integer return value based on board call
         board.movePiece(data.playerID, movement.source, movement.destination);
     }
 

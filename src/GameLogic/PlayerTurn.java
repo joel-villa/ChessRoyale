@@ -23,13 +23,11 @@ public class PlayerTurn {
         switch (phase) {
             case 1 -> {
                 player.gainElixir(1);
-                if (player.handSize() < Constants.HAND_SIZE){
-                    player.drawCard(1);
-                }
+                player.drawCards();
             }
             case 2 -> {
                 player.gainElixir(2);
-                player.drawCard(1);
+                player.drawCards();
             }
         }
     }
