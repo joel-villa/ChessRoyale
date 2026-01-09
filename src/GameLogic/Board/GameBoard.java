@@ -11,6 +11,9 @@ import java.util.Set;
  * The board that the game is played on
  */
 public class GameBoard implements Board {
+
+    private static Board boardInstance;
+
     // Board dimensions
     private static final int HEIGHT = 7;
     private static final int WIDTH = 7;
@@ -31,9 +34,17 @@ public class GameBoard implements Board {
     };
 
     /**
+     * @return The singleton board instance
+     */
+    public static Board getInstance() {
+        if (boardInstance == null) boardInstance = new GameBoard();
+        return boardInstance;
+    }
+
+    /**
      *
      */
-    public GameBoard() {
+    private GameBoard() {
         board = new Piece[WIDTH][HEIGHT];
         initBoard();
     }
@@ -75,6 +86,7 @@ public class GameBoard implements Board {
         return obstacles;
     }
 
+    //TODO: handle safety, integer return value based on result
     @Override
     public void movePiece(int player, Coordinate source, Coordinate target) {
         Piece moved = board[source.row()][source.col()];
@@ -97,6 +109,7 @@ public class GameBoard implements Board {
         return board[coordinate.row()][coordinate.col()];
     }
 
+    //TODO: handle safety, integer return value based on result
     @Override
     public int attack(int player, Coordinate source, Coordinate target) {
         //TODO
